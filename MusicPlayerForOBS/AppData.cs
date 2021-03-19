@@ -6,7 +6,7 @@ namespace MusicPlayerForOBS
     [Serializable]
     public class AppData
     {
-        [JsonIgnore] public string Version = "0.1.1";
+        [JsonIgnore] public string Version = "0.1.2";
         public string ObsFilePath;
         public int Volume;
 

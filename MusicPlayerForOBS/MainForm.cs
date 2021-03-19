@@ -94,30 +94,33 @@ namespace MusicPlayerForOBS
         private void SetSongToPlay(int songNumber)
         {
             string[] brokenPaths = currentPlaylist?.CheckPathsActuality();
-            foreach (string path in audioPathsToPlay.ToArray())
+            if (brokenPaths != null)
             {
-                foreach (string brokenPath in brokenPaths)
+                foreach (string path in audioPathsToPlay.ToArray())
                 {
-                    if (path == brokenPath)
+                    foreach (string brokenPath in brokenPaths)
                     {
-                        int brokenIndex = audioPathsToPlay.IndexOf(path);
-                        audioPathsToPlay.Remove(path);
-                        int brokenItem = playOrder[brokenIndex];
-                        playOrder.RemoveAt(brokenIndex);
-
-                        int[] newPlayOrder = new int[playOrder.Count];
-                        for (int i = 0; i < playOrder.Count; i++)
+                        if (path == brokenPath)
                         {
-                            if (playOrder[i] > brokenItem)
+                            int brokenIndex = audioPathsToPlay.IndexOf(path);
+                            audioPathsToPlay.Remove(path);
+                            int brokenItem = playOrder[brokenIndex];
+                            playOrder.RemoveAt(brokenIndex);
+
+                            int[] newPlayOrder = new int[playOrder.Count];
+                            for (int i = 0; i < playOrder.Count; i++)
                             {
-                                newPlayOrder[i] = playOrder[i] - 1;
+                                if (playOrder[i] > brokenItem)
+                                {
+                                    newPlayOrder[i] = playOrder[i] - 1;
+                                }
+                                else
+                                {
+                                    newPlayOrder[i] = playOrder[i];
+                                }
                             }
-                            else
-                            {
-                                newPlayOrder[i] = playOrder[i];
-                            }
+                            playOrder = newPlayOrder.ToList();
                         }
-                        playOrder = newPlayOrder.ToList();
                     }
                 }
             }
