@@ -6,11 +6,12 @@ namespace MusicPlayerForOBS
     [Serializable]
     public class AppData
     {
-        [JsonIgnore] public string Version = "0.1.2";
+        public const string Version = "0.1.3";
+
         public string ObsFilePath;
         public int Volume;
 
-        [JsonIgnore] public const string playlistsFolder = "data\\playlists";
-        [JsonIgnore] public const string settingsFolder = "data\\settings";
+        [JsonIgnore] public const string PlaylistsFolder = "data\\playlists\\";
+        [JsonIgnore] public const string SettingsFolder = "data\\settings\\";
     }
 }

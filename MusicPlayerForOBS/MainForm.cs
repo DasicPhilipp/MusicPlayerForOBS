@@ -20,7 +20,7 @@ namespace MusicPlayerForOBS
     {
         public readonly string Version;
 
-        public Playlist currentPlaylist;
+        public Playlist CurrentPlaylist;
 
         public static readonly string[] AudioExtensions =
         {
@@ -28,98 +28,98 @@ namespace MusicPlayerForOBS
             ".wav"
         };
 
-        private string pauseSymbol = " ||";
-        private string playSymbol = " >";
+        private string _pauseSymbol = " ||";
+        private string _playSymbol = " >";
 
-        private WaveOutEvent waveOut;
+        private WaveOutEvent _waveOut;
 
-        private Mp3FileReader mp3Reader;
-        private WaveFileReader wavReader;
+        private Mp3FileReader _mp3Reader;
+        private WaveFileReader _wavReader;
 
-        private List<string> audioPathsToPlay;
+        private List<string> _audioPathsToPlay;
 
-        private List<int> playOrder;
-        private int playingSongNumber;
-        private bool nextButtonClicked;
+        private List<int> _playOrder;
+        private int _playingSongNumber;
+        private bool _nextButtonClicked;
 
-        private int volume;
+        private int _volume;
 
-        private string obsFilePath;
+        private string _obsFilePath;
 
-        private PlayMode playMode;
+        private PlayMode _playMode;
 
         public MainForm()
         {
             InitializeComponent();
 
-            waveOut = new WaveOutEvent();
-            audioPathsToPlay = new List<string>();
+            _waveOut = new WaveOutEvent();
+            _audioPathsToPlay = new List<string>();
 
             Application.ApplicationExit += OnAppClose;
-            waveOut.PlaybackStopped += OnPlaybackStopped;
+            _waveOut.PlaybackStopped += OnPlaybackStopped;
 
-            Directory.CreateDirectory(AppData.playlistsFolder);
-            Directory.CreateDirectory(AppData.settingsFolder);
+            Directory.CreateDirectory(AppData.PlaylistsFolder);
+            Directory.CreateDirectory(AppData.SettingsFolder);
 
-            if (File.Exists(Path.Combine(AppData.settingsFolder, "settings.json")))
+            if (File.Exists(Path.Combine(AppData.SettingsFolder, "settings.json")))
             {
-                AppData data = JsonSerialization.Deserialize<AppData>(Path.Combine(AppData.settingsFolder, "settings.json"));
-                Version = data.Version;
-                volume = data.Volume;
-                obsFilePath = data.ObsFilePath;
+                AppData data = JsonSerialization.Deserialize<AppData>(Path.Combine(AppData.SettingsFolder, "settings.json"));
+                Version = AppData.Version;
+                _volume = data.Volume;
+                _obsFilePath = data.ObsFilePath;
             }
 
-            if (obsFilePath == null) obsFilePath = "";
+            if (_obsFilePath == null) _obsFilePath = "";
 
-            if (Directory.GetFiles(AppData.playlistsFolder).Length != 0)
+            if (Directory.GetFiles(AppData.PlaylistsFolder).Length != 0)
             {
-                button6.Enabled = true;
+                _selectPlaylist.Enabled = true;
             }
             else
             {
-                button6.Enabled = false;
+                _selectPlaylist.Enabled = false;
             }
 
             Text += " " + Version;
 
-            playMode = PlayMode.None;
+            _playMode = PlayMode.None;
 
-            VolumeTrackBar.Value = volume;
-            VolumeIndicator.Text = $"Volume: {volume}";
+            _volumeTrackBar.Value = _volume;
+            _volumeIndicator.Text = $"Volume: {_volume}";
 
-            timer1.Interval = 1000;
-            timer1.Enabled = true;
+            _musicTimer.Interval = 1000;
+            _musicTimer.Enabled = true;
         }
 
         private void SetSongToPlay(int songNumber)
         {
-            string[] brokenPaths = currentPlaylist?.CheckPathsActuality();
+            string[] brokenPaths = CurrentPlaylist?.CheckPathsActuality();
             if (brokenPaths != null)
             {
-                foreach (string path in audioPathsToPlay.ToArray())
+                foreach (string path in _audioPathsToPlay.ToArray())
                 {
                     foreach (string brokenPath in brokenPaths)
                     {
                         if (path == brokenPath)
                         {
-                            int brokenIndex = audioPathsToPlay.IndexOf(path);
-                            audioPathsToPlay.Remove(path);
-                            int brokenItem = playOrder[brokenIndex];
-                            playOrder.RemoveAt(brokenIndex);
+                            int brokenIndex = _audioPathsToPlay.IndexOf(path);
+                            _audioPathsToPlay.Remove(path);
+                            int brokenItem = _playOrder[brokenIndex];
+                            _playOrder.RemoveAt(brokenIndex);
 
-                            int[] newPlayOrder = new int[playOrder.Count];
-                            for (int i = 0; i < playOrder.Count; i++)
+                            int[] newPlayOrder = new int[_playOrder.Count];
+                            for (int i = 0; i < _playOrder.Count; i++)
                             {
-                                if (playOrder[i] > brokenItem)
+                                if (_playOrder[i] > brokenItem)
                                 {
-                                    newPlayOrder[i] = playOrder[i] - 1;
+                                    newPlayOrder[i] = _playOrder[i] - 1;
                                 }
                                 else
                                 {
-                                    newPlayOrder[i] = playOrder[i];
+                                    newPlayOrder[i] = _playOrder[i];
                                 }
                             }
-                            playOrder = newPlayOrder.ToList();
+                            _playOrder = newPlayOrder.ToList();
                         }
                     }
                 }
@@ -127,51 +127,51 @@ namespace MusicPlayerForOBS
 
             try
             {
-                if (songNumber >= audioPathsToPlay.Count)
+                if (songNumber >= _audioPathsToPlay.Count)
                     songNumber = 0;
                 else if (songNumber < 0)
-                    songNumber = audioPathsToPlay.Count - 1;
+                    songNumber = _audioPathsToPlay.Count - 1;
 
-                if (playingSongNumber >= audioPathsToPlay.Count)
-                    playingSongNumber = 0;
-                else if (playingSongNumber < 0)
-                    playingSongNumber = audioPathsToPlay.Count - 1;
+                if (_playingSongNumber >= _audioPathsToPlay.Count)
+                    _playingSongNumber = 0;
+                else if (_playingSongNumber < 0)
+                    _playingSongNumber = _audioPathsToPlay.Count - 1;
 
-                waveOut.Dispose();
-                if (mp3Reader != null) mp3Reader.Dispose();
-                if (wavReader != null) wavReader.Dispose();
+                _waveOut.Dispose();
+                if (_mp3Reader != null) _mp3Reader.Dispose();
+                if (_wavReader != null) _wavReader.Dispose();
 
-                songNumber = playOrder[songNumber];
-                switch (Path.GetExtension(audioPathsToPlay[songNumber]))
+                songNumber = _playOrder[songNumber];
+                switch (Path.GetExtension(_audioPathsToPlay[songNumber]))
                 {
                     case ".mp3":
-                        mp3Reader = new Mp3FileReader(audioPathsToPlay[songNumber]);
-                        waveOut.Init(mp3Reader);
+                        _mp3Reader = new Mp3FileReader(_audioPathsToPlay[songNumber]);
+                        _waveOut.Init(_mp3Reader);
 
-                        trackBar1.Maximum = (int)double.Parse(mp3Reader.TotalTime.TotalSeconds.ToString());
+                        timeline.Maximum = (int)double.Parse(_mp3Reader.TotalTime.TotalSeconds.ToString());
 
                         break;
 
                     case ".wav":
-                        wavReader = new WaveFileReader(audioPathsToPlay[songNumber]);
-                        waveOut.Init(wavReader);
+                        _wavReader = new WaveFileReader(_audioPathsToPlay[songNumber]);
+                        _waveOut.Init(_wavReader);
 
-                        trackBar1.Maximum = (int)double.Parse(wavReader.TotalTime.TotalSeconds.ToString());
+                        timeline.Maximum = (int)double.Parse(_wavReader.TotalTime.TotalSeconds.ToString());
 
                         break;
                 }
-                MusicName.Text = Path.GetFileNameWithoutExtension(audioPathsToPlay[songNumber]);
-                File.WriteAllText(Path.Combine(obsFilePath, "!OBS.txt"), MusicName.Text);
+                MusicName.Text = Path.GetFileNameWithoutExtension(_audioPathsToPlay[songNumber]);
+                File.WriteAllText(Path.Combine(_obsFilePath, "!OBS.txt"), MusicName.Text);
 
-                ErrorsLabel.Text = "";
+                _errorsLabel.Text = "";
             }
             catch (NullReferenceException)
             {
-                ErrorsLabel.Text = "Error: Path is incorrect";
+                _errorsLabel.Text = "Error: Path is incorrect";
             }
             catch (ArgumentOutOfRangeException)
             {
-                ErrorsLabel.Text = "Error: Folder does not contain any audio";
+                _errorsLabel.Text = "Error: Folder does not contain any audio";
             }
         }
 
@@ -180,13 +180,13 @@ namespace MusicPlayerForOBS
             if (mode == PlayMode.Shuffle || mode == PlayMode.LoopAndShuffle)
             {
                 Random random = new Random();
-                playOrder = Enumerable.Repeat(0, audioPathsToPlay.Count).Select((x, i) => new { i, rand = random.Next() }).OrderBy(x => x.rand).Select(x => x.i).ToList();
+                _playOrder = Enumerable.Repeat(0, _audioPathsToPlay.Count).Select((x, i) => new { i, rand = random.Next() }).OrderBy(x => x.rand).Select(x => x.i).ToList();
 
                 return true;
             }
             else
             {
-                playOrder = Enumerable.Range(-1, audioPathsToPlay.Count).Select(x => x + 1).ToList();
+                _playOrder = Enumerable.Range(-1, _audioPathsToPlay.Count).Select(x => x + 1).ToList();
 
                 return false;
             }
@@ -194,35 +194,38 @@ namespace MusicPlayerForOBS
 
         public void PlaylistChanged(Playlist playlist)
         {
-            waveOut.Dispose();
-            if (mp3Reader != null) mp3Reader.Dispose();
-            if (wavReader != null) wavReader.Dispose();
+            _waveOut.Dispose();
+            if (_mp3Reader != null) _mp3Reader.Dispose();
+            if (_wavReader != null) _wavReader.Dispose();
 
-            label2.Text = playlist.Name;
-            currentPlaylist = playlist;
+            _namePlaylistPlaying.Text = playlist.Name;
+            CurrentPlaylist = playlist;
 
-            audioPathsToPlay.Clear();
-            audioPathsToPlay.AddRange(playlist.GetSongsValues());
+            _audioPathsToPlay.Clear();
+            _audioPathsToPlay.AddRange(playlist.GetSongsValues());
 
-            ShuffleSongs(playMode);
-            waveOut.Stop();
+            ShuffleSongs(_playMode);
+            _waveOut.Stop();
 
-            button7.Enabled = true;
+            _editPlaylist.Enabled = true;
         }
 
         public void PlaylistDeleted(Playlist playlist)
         {
-            waveOut.Dispose();
-            if (mp3Reader != null) mp3Reader.Dispose();
-            if (wavReader != null) wavReader.Dispose();
+            if (playlist == CurrentPlaylist)
+            {
+                _waveOut.Dispose();
+                if (_mp3Reader != null) _mp3Reader.Dispose();
+                if (_wavReader != null) _wavReader.Dispose();
 
-            label2.Text = "";
-            currentPlaylist = null;
+                _namePlaylistPlaying.Text = "";
+                CurrentPlaylist = null;
 
-            audioPathsToPlay.Clear();
-            playOrder.Clear();
+                _audioPathsToPlay.Clear();
+                _playOrder.Clear();
 
-            button7.Enabled = false;
+                _editPlaylist.Enabled = false;
+            }
         }
 
         //
@@ -235,71 +238,70 @@ namespace MusicPlayerForOBS
         {
             if (!loopCheckbox.Checked && !shuffleCheckBox.Checked)
             {
-                playMode = PlayMode.None;
+                _playMode = PlayMode.None;
             }
 
             else if (loopCheckbox.Checked && !shuffleCheckBox.Checked)
             {
-                playMode = PlayMode.Loop;
+                _playMode = PlayMode.Loop;
             }
 
             else if (!loopCheckbox.Checked && shuffleCheckBox.Checked)
             {
-                playMode = PlayMode.Shuffle;
+                _playMode = PlayMode.Shuffle;
             }
 
             else if (loopCheckbox.Checked && shuffleCheckBox.Checked)
             {
-                playMode = PlayMode.LoopAndShuffle;
+                _playMode = PlayMode.LoopAndShuffle;
             }
 
-            ShuffleSongs(playMode);
+            ShuffleSongs(_playMode);
         }
 
         private void OnAppClose(object sender, EventArgs e)
         {
-            waveOut.Dispose();
-            if (mp3Reader != null) mp3Reader.Dispose();
-            if (wavReader != null) wavReader.Dispose();
+            _waveOut.Dispose();
+            if (_mp3Reader != null) _mp3Reader.Dispose();
+            if (_wavReader != null) _wavReader.Dispose();
 
             AppData data = new AppData
             {
-                Version = Version,
-                Volume = volume,
-                ObsFilePath = obsFilePath
+                Volume = _volume,
+                ObsFilePath = _obsFilePath
             };
 
-            JsonSerialization.SerializeAsync(data, AppData.settingsFolder, "settings.json");
+            JsonSerialization.SerializeAsync(data, AppData.SettingsFolder + "settings.json");
         }
         private void NextTrack_Click(object sender, EventArgs e)
         {
-            waveOut.Stop();
-            nextButtonClicked = true;
-            SetSongToPlay(++playingSongNumber);
+            _waveOut.Stop();
+            _nextButtonClicked = true;
+            SetSongToPlay(++_playingSongNumber);
 
             try
             {
-                waveOut.Play();
+                _waveOut.Play();
             }
             catch (InvalidOperationException)
             {
-                ErrorsLabel.Text = "Error: Folder does not contain any audio";
+                _errorsLabel.Text = "Error: Folder does not contain any audio";
             }
         }
 
         private void PreviousTrack_Click(object sender, EventArgs e)
         {
-            waveOut.Stop();
-            nextButtonClicked = true;
-            SetSongToPlay(--playingSongNumber);
+            _waveOut.Stop();
+            _nextButtonClicked = true;
+            SetSongToPlay(--_playingSongNumber);
 
             try
             {
-                waveOut.Play();
+                _waveOut.Play();
             }
             catch (InvalidOperationException)
             {
-                ErrorsLabel.Text = "Error: Folder does not contain any audio";
+                _errorsLabel.Text = "Error: Folder does not contain any audio";
             }
         }
 
@@ -307,9 +309,9 @@ namespace MusicPlayerForOBS
         {
             TrackBar trackBar = sender as TrackBar;
 
-            volume = trackBar.Value;
-            waveOut.Volume = volume / 100f;
-            VolumeIndicator.Text = $"Volume: {trackBar.Value}";
+            _volume = trackBar.Value;
+            _waveOut.Volume = _volume / 100f;
+            _volumeIndicator.Text = $"Volume: {trackBar.Value}";
         }
 
         private void ChooseMusicFolder_Click(object sender, EventArgs e)
@@ -319,34 +321,34 @@ namespace MusicPlayerForOBS
             {
                 try
                 {
-                    waveOut.Dispose();
-                    if (mp3Reader != null) mp3Reader.Dispose();
-                    if (wavReader != null) wavReader.Dispose();
+                    _waveOut.Dispose();
+                    if (_mp3Reader != null) _mp3Reader.Dispose();
+                    if (_wavReader != null) _wavReader.Dispose();
 
-                    audioPathsToPlay.Clear();
+                    _audioPathsToPlay.Clear();
 
                     foreach (string path in Directory.GetFiles(folderBrowserDialog1.SelectedPath))
                     {
                         if (AudioExtensions.Contains(Path.GetExtension(path)))
                         {
-                            audioPathsToPlay.Add(path);
+                            _audioPathsToPlay.Add(path);
                         }
                     }
-                    ErrorsLabel.Text = "";
+                    _errorsLabel.Text = "";
 
-                    ShuffleSongs(playMode);
-                    waveOut.Stop();
+                    ShuffleSongs(_playMode);
+                    _waveOut.Stop();
                 }
                 catch (NullReferenceException)
                 {
-                    ErrorsLabel.Text = "Error: Folder is empty";
+                    _errorsLabel.Text = "Error: Folder is empty";
                 }
                 catch (ArgumentException)
                 {
-                    ErrorsLabel.Text = "Error: Path is incorrect";
+                    _errorsLabel.Text = "Error: Path is incorrect";
                 }
 
-                label2.Text = "";
+                _namePlaylistPlaying.Text = "";
             }
 
         }
@@ -355,127 +357,127 @@ namespace MusicPlayerForOBS
         {
             Button button = sender as Button;
 
-            if (waveOut.PlaybackState == PlaybackState.Playing)
+            if (_waveOut.PlaybackState == PlaybackState.Playing)
             {
-                waveOut.Pause();
+                _waveOut.Pause();
 
-                button.Text = playSymbol;
+                button.Text = _playSymbol;
             }
-            else if (waveOut.PlaybackState == PlaybackState.Paused)
+            else if (_waveOut.PlaybackState == PlaybackState.Paused)
             {
-                waveOut.Play();
+                _waveOut.Play();
 
-                button.Text = pauseSymbol;
+                button.Text = _pauseSymbol;
             }
-            else if (waveOut.PlaybackState == PlaybackState.Stopped)
+            else if (_waveOut.PlaybackState == PlaybackState.Stopped)
             {
                 try
                 {
-                    SetSongToPlay(playingSongNumber);
-                    waveOut.Play();
+                    SetSongToPlay(_playingSongNumber);
+                    _waveOut.Play();
                 }
                 catch { }
 
-                button.Text = pauseSymbol;
+                button.Text = _pauseSymbol;
             }
         }
 
         private void OnPlaybackStopped(object sender, StoppedEventArgs e)
         {
-            if (audioPathsToPlay.Count - 1 <= playingSongNumber && playMode == PlayMode.None || playMode == PlayMode.LoopAndShuffle)
+            if (_audioPathsToPlay.Count - 1 <= _playingSongNumber && _playMode == PlayMode.None || _playMode == PlayMode.LoopAndShuffle)
             {
                 return;
             }
 
-            if (playMode == PlayMode.Loop || playMode == PlayMode.LoopAndShuffle)
+            if (_playMode == PlayMode.Loop || _playMode == PlayMode.LoopAndShuffle)
             {
-                SetSongToPlay(playingSongNumber);
+                SetSongToPlay(_playingSongNumber);
             }
 
-            else if (!nextButtonClicked)
+            else if (!_nextButtonClicked)
             {
-                SetSongToPlay(++playingSongNumber);
+                SetSongToPlay(++_playingSongNumber);
             }
 
-            nextButtonClicked = false;
+            _nextButtonClicked = false;
 
-            waveOut.Play();
+            _waveOut.Play();
         }
 
         private void PlaylistEditor_Click(object sender, EventArgs e)
         {
-            PlaylistEditor playlistEditorForm = new PlaylistEditor(currentPlaylist, this);
-            playlistEditorForm.Show();
+            PlaylistEditorForm playlistEditor = new PlaylistEditorForm(CurrentPlaylist, this);
+            playlistEditor.Show();
         }
 
-        private void ScrollTimeline(object sender, EventArgs e)
+        private void ScrollTimeline_ValueChange(object sender, EventArgs e)
         {
-            if (waveOut.PlaybackState == PlaybackState.Playing)
+            if (_waveOut.PlaybackState == PlaybackState.Playing)
             {
-                if (mp3Reader != null)
+                if (_mp3Reader != null)
                 {
-                    mp3Reader.CurrentTime = TimeSpan.FromSeconds(trackBar1.Value);
+                    _mp3Reader.CurrentTime = TimeSpan.FromSeconds(timeline.Value);
                 }
-                else if (wavReader != null)
+                else if (_wavReader != null)
                 {
-                    wavReader.CurrentTime = TimeSpan.FromSeconds(trackBar1.Value);
+                    _wavReader.CurrentTime = TimeSpan.FromSeconds(timeline.Value);
                 }
             }
         }
 
-        private void SongTimer(object sender, EventArgs e)
+        private void SongTimer_Tick(object sender, EventArgs e)
         {
-            if (waveOut.PlaybackState == PlaybackState.Playing)
+            if (_waveOut.PlaybackState == PlaybackState.Playing)
             {
-                trackBar1.Enabled = true;
+                timeline.Enabled = true;
 
-                if (mp3Reader != null)
+                if (_mp3Reader != null)
                 {
-                    int secondsPassed = (int)double.Parse(mp3Reader.CurrentTime.TotalSeconds.ToString());
-                    if (secondsPassed < trackBar1.Maximum)
+                    int secondsPassed = (int)double.Parse(_mp3Reader.CurrentTime.TotalSeconds.ToString());
+                    if (secondsPassed < timeline.Maximum)
                     {
-                        trackBar1.Value = secondsPassed;
-                        label1.Text = mp3Reader.CurrentTime.ToString("mm\\:ss");
+                        timeline.Value = secondsPassed;
+                        label1.Text = _mp3Reader.CurrentTime.ToString("mm\\:ss");
                     }
                 }
-                else if (wavReader != null)
+                else if (_wavReader != null)
                 {
-                    int secondsPassed = (int)double.Parse(wavReader.CurrentTime.TotalSeconds.ToString());
-                    if (secondsPassed < trackBar1.Maximum)
+                    int secondsPassed = (int)double.Parse(_wavReader.CurrentTime.TotalSeconds.ToString());
+                    if (secondsPassed < timeline.Maximum)
                     {
-                        trackBar1.Value = secondsPassed;
-                        label1.Text = wavReader.CurrentTime.ToString("mm\\:ss");
+                        timeline.Value = secondsPassed;
+                        label1.Text = _wavReader.CurrentTime.ToString("mm\\:ss");
                     }
                 }
             }
             else
             {
-                trackBar1.Enabled = false;
+                timeline.Enabled = false;
             }
         }
 
-        private void CreateNewPlaylist(object sender, EventArgs e)
+        private void CreateNewPlaylist_Click(object sender, EventArgs e)
         {
-            PlaylistCreation playlistCreationForm = new PlaylistCreation(button6);
-            playlistCreationForm.Show();
+            PlaylistEditorForm playlistEditor = new PlaylistEditorForm(_selectPlaylist);
+            playlistEditor.Show();
         }
 
-        private void SelectPlaylist(object sender, EventArgs e)
+        private void SelectPlaylist_Click(object sender, EventArgs e)
         {
-            waveOut.Pause();
+            _waveOut.Pause();
 
-            button4.Text = playSymbol;
+            playButton.Text = _playSymbol;
 
-            PlaylistSelector playlistSelector = new PlaylistSelector(this);
+            PlaylistSelectorForm playlistSelector = new PlaylistSelectorForm(this);
             playlistSelector.Show();
         }
 
-        private void ObsFileChangePath_Clicked(object sender, EventArgs e)
+        private void ObsFileChangePath_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = folderBrowserDialog2.ShowDialog();
+            DialogResult dialogResult = _obsPathBrowserDialog.ShowDialog();
             if (dialogResult != DialogResult.Cancel)
             {
-                obsFilePath = folderBrowserDialog2.SelectedPath;
+                _obsFilePath = _obsPathBrowserDialog.SelectedPath;
             }
         }
     }

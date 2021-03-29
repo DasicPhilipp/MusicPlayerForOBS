@@ -6,20 +6,11 @@ namespace MusicPlayerForOBS
 {
     public static class JsonSerialization
     {
-        private static JsonSerializerSettings jsonSettings;
-        static JsonSerialization()
+        public static async void SerializeAsync<T>(T ob, string path, Formatting format = Formatting.Indented)
         {
-            jsonSettings = new JsonSerializerSettings()
-            {
-                TypeNameHandling = TypeNameHandling.All
-            };
-        }
+            string json = JsonConvert.SerializeObject(ob, format);
 
-        public static async void SerializeAsync<T>(T ob, string path, string name, Formatting format = Formatting.Indented)
-        {
-            string json = JsonConvert.SerializeObject(ob, format, jsonSettings);
-
-            using (StreamWriter file = new StreamWriter(Path.Combine(path, name), false))
+            using (StreamWriter file = new StreamWriter(path, false))
             {
                 await file.WriteAsync(json);
             }
@@ -31,7 +22,7 @@ namespace MusicPlayerForOBS
             {
                 string json = File.ReadAllText(filePath);
 
-                return (T)JsonConvert.DeserializeObject(json, jsonSettings);
+                return JsonConvert.DeserializeObject<T>(json);
             }
             else
             {

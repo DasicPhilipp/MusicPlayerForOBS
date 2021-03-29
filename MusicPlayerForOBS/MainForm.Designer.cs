@@ -32,26 +32,26 @@ namespace MusicPlayerForOBS
             this.components = new System.ComponentModel.Container();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.VolumeTrackBar = new System.Windows.Forms.TrackBar();
+            this._volumeTrackBar = new System.Windows.Forms.TrackBar();
             this.MusicName = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.VolumeIndicator = new System.Windows.Forms.Label();
-            this.ErrorsLabel = new System.Windows.Forms.Label();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.playButton = new System.Windows.Forms.Button();
+            this._volumeIndicator = new System.Windows.Forms.Label();
+            this._errorsLabel = new System.Windows.Forms.Label();
+            this.timeline = new System.Windows.Forms.TrackBar();
             this.loopCheckbox = new System.Windows.Forms.CheckBox();
             this.shuffleCheckBox = new System.Windows.Forms.CheckBox();
             this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
+            this._selectPlaylist = new System.Windows.Forms.Button();
+            this._editPlaylist = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label2 = new System.Windows.Forms.Label();
+            this._musicTimer = new System.Windows.Forms.Timer(this.components);
+            this._namePlaylistPlaying = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
-            this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
-            ((System.ComponentModel.ISupportInitialize)(this.VolumeTrackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this._obsPathBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            ((System.ComponentModel.ISupportInitialize)(this._volumeTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timeline)).BeginInit();
             this.SuspendLayout();
             // 
             // button2
@@ -78,13 +78,13 @@ namespace MusicPlayerForOBS
             // 
             // VolumeTrackBar
             // 
-            this.VolumeTrackBar.Location = new System.Drawing.Point(30, 167);
-            this.VolumeTrackBar.Maximum = 100;
-            this.VolumeTrackBar.Name = "VolumeTrackBar";
-            this.VolumeTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.VolumeTrackBar.Size = new System.Drawing.Size(45, 161);
-            this.VolumeTrackBar.TabIndex = 3;
-            this.VolumeTrackBar.Scroll += new System.EventHandler(this.VolumeTrackBar_Scroll);
+            this._volumeTrackBar.Location = new System.Drawing.Point(30, 167);
+            this._volumeTrackBar.Maximum = 100;
+            this._volumeTrackBar.Name = "VolumeTrackBar";
+            this._volumeTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this._volumeTrackBar.Size = new System.Drawing.Size(45, 161);
+            this._volumeTrackBar.TabIndex = 3;
+            this._volumeTrackBar.Scroll += new System.EventHandler(this.VolumeTrackBar_Scroll);
             // 
             // MusicName
             // 
@@ -109,44 +109,44 @@ namespace MusicPlayerForOBS
             // 
             // button4
             // 
-            this.button4.Font = new System.Drawing.Font("Minecraft Rus", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button4.Location = new System.Drawing.Point(350, 386);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(103, 52);
-            this.button4.TabIndex = 6;
-            this.button4.Text = " >";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.PlayAndPause_Click);
+            this.playButton.Font = new System.Drawing.Font("Minecraft Rus", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.playButton.Location = new System.Drawing.Point(350, 386);
+            this.playButton.Name = "button4";
+            this.playButton.Size = new System.Drawing.Size(103, 52);
+            this.playButton.TabIndex = 6;
+            this.playButton.Text = " >";
+            this.playButton.UseVisualStyleBackColor = true;
+            this.playButton.Click += new System.EventHandler(this.PlayAndPause_Click);
             // 
             // VolumeIndicator
             // 
-            this.VolumeIndicator.AutoSize = true;
-            this.VolumeIndicator.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.VolumeIndicator.Location = new System.Drawing.Point(12, 148);
-            this.VolumeIndicator.Name = "VolumeIndicator";
-            this.VolumeIndicator.Size = new System.Drawing.Size(82, 16);
-            this.VolumeIndicator.TabIndex = 9;
-            this.VolumeIndicator.Text = "Volume: ";
-            this.VolumeIndicator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this._volumeIndicator.AutoSize = true;
+            this._volumeIndicator.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this._volumeIndicator.Location = new System.Drawing.Point(12, 148);
+            this._volumeIndicator.Name = "VolumeIndicator";
+            this._volumeIndicator.Size = new System.Drawing.Size(82, 16);
+            this._volumeIndicator.TabIndex = 9;
+            this._volumeIndicator.Text = "Volume: ";
+            this._volumeIndicator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ErrorsLabel
             // 
-            this.ErrorsLabel.AutoSize = true;
-            this.ErrorsLabel.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ErrorsLabel.ForeColor = System.Drawing.Color.Red;
-            this.ErrorsLabel.Location = new System.Drawing.Point(294, 21);
-            this.ErrorsLabel.Name = "ErrorsLabel";
-            this.ErrorsLabel.Size = new System.Drawing.Size(0, 16);
-            this.ErrorsLabel.TabIndex = 10;
-            this.ErrorsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this._errorsLabel.AutoSize = true;
+            this._errorsLabel.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this._errorsLabel.ForeColor = System.Drawing.Color.Red;
+            this._errorsLabel.Location = new System.Drawing.Point(294, 21);
+            this._errorsLabel.Name = "ErrorsLabel";
+            this._errorsLabel.Size = new System.Drawing.Size(0, 16);
+            this._errorsLabel.TabIndex = 10;
+            this._errorsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(12, 335);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(776, 45);
-            this.trackBar1.TabIndex = 11;
-            this.trackBar1.Scroll += new System.EventHandler(this.ScrollTimeline);
+            this.timeline.Location = new System.Drawing.Point(12, 335);
+            this.timeline.Name = "trackBar1";
+            this.timeline.Size = new System.Drawing.Size(776, 45);
+            this.timeline.TabIndex = 11;
+            this.timeline.Scroll += new System.EventHandler(this.ScrollTimeline_ValueChange);
             // 
             // loopCheckbox
             // 
@@ -181,31 +181,31 @@ namespace MusicPlayerForOBS
             this.button5.TabIndex = 14;
             this.button5.Text = "Create new playlist";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.CreateNewPlaylist);
+            this.button5.Click += new System.EventHandler(this.CreateNewPlaylist_Click);
             // 
             // button6
             // 
-            this.button6.Enabled = false;
-            this.button6.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button6.Location = new System.Drawing.Point(582, 189);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(206, 29);
-            this.button6.TabIndex = 15;
-            this.button6.Text = "Select playlist";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.SelectPlaylist);
+            this._selectPlaylist.Enabled = false;
+            this._selectPlaylist.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this._selectPlaylist.Location = new System.Drawing.Point(582, 189);
+            this._selectPlaylist.Name = "button6";
+            this._selectPlaylist.Size = new System.Drawing.Size(206, 29);
+            this._selectPlaylist.TabIndex = 15;
+            this._selectPlaylist.Text = "Select playlist";
+            this._selectPlaylist.UseVisualStyleBackColor = true;
+            this._selectPlaylist.Click += new System.EventHandler(this.SelectPlaylist_Click);
             // 
             // button7
             // 
-            this.button7.Enabled = false;
-            this.button7.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button7.Location = new System.Drawing.Point(582, 239);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(206, 29);
-            this.button7.TabIndex = 16;
-            this.button7.Text = "Edit playlist";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.PlaylistEditor_Click);
+            this._editPlaylist.Enabled = false;
+            this._editPlaylist.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this._editPlaylist.Location = new System.Drawing.Point(582, 239);
+            this._editPlaylist.Name = "button7";
+            this._editPlaylist.Size = new System.Drawing.Size(206, 29);
+            this._editPlaylist.TabIndex = 16;
+            this._editPlaylist.Text = "Edit playlist";
+            this._editPlaylist.UseVisualStyleBackColor = true;
+            this._editPlaylist.Click += new System.EventHandler(this.PlaylistEditor_Click);
             // 
             // label1
             // 
@@ -219,16 +219,16 @@ namespace MusicPlayerForOBS
             // 
             // timer1
             // 
-            this.timer1.Tick += new System.EventHandler(this.SongTimer);
+            this._musicTimer.Tick += new System.EventHandler(this.SongTimer_Tick);
             // 
             // label2
             // 
-            this.label2.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(227, 158);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(349, 23);
-            this.label2.TabIndex = 18;
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this._namePlaylistPlaying.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this._namePlaylistPlaying.Location = new System.Drawing.Point(227, 158);
+            this._namePlaylistPlaying.Name = "label2";
+            this._namePlaylistPlaying.Size = new System.Drawing.Size(349, 23);
+            this._namePlaylistPlaying.TabIndex = 18;
+            this._namePlaylistPlaying.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button8
             // 
@@ -241,7 +241,7 @@ namespace MusicPlayerForOBS
             this.button8.TabIndex = 19;
             this.button8.Text = "Select path of the file for OBS";
             this.button8.UseVisualStyleBackColor = false;
-            this.button8.Click += new System.EventHandler(this.ObsFileChangePath_Clicked);
+            this.button8.Click += new System.EventHandler(this.ObsFileChangePath_Click);
             // 
             // MainForm
             // 
@@ -250,28 +250,28 @@ namespace MusicPlayerForOBS
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.button8);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this._namePlaylistPlaying);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
+            this.Controls.Add(this._editPlaylist);
+            this.Controls.Add(this._selectPlaylist);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.shuffleCheckBox);
             this.Controls.Add(this.loopCheckbox);
-            this.Controls.Add(this.trackBar1);
-            this.Controls.Add(this.ErrorsLabel);
-            this.Controls.Add(this.VolumeIndicator);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.timeline);
+            this.Controls.Add(this._errorsLabel);
+            this.Controls.Add(this._volumeIndicator);
+            this.Controls.Add(this.playButton);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.MusicName);
-            this.Controls.Add(this.VolumeTrackBar);
+            this.Controls.Add(this._volumeTrackBar);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Music Player for OBS";
-            ((System.ComponentModel.ISupportInitialize)(this.VolumeTrackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._volumeTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timeline)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -281,24 +281,24 @@ namespace MusicPlayerForOBS
 
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TrackBar VolumeTrackBar;
+        private System.Windows.Forms.TrackBar _volumeTrackBar;
         private System.Windows.Forms.Label MusicName;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Label VolumeIndicator;
-        private System.Windows.Forms.Label ErrorsLabel;
-        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Button playButton;
+        private System.Windows.Forms.Label _volumeIndicator;
+        private System.Windows.Forms.Label _errorsLabel;
+        private System.Windows.Forms.TrackBar timeline;
         private System.Windows.Forms.CheckBox loopCheckbox;
         private System.Windows.Forms.CheckBox shuffleCheckBox;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button _selectPlaylist;
+        private System.Windows.Forms.Button _editPlaylist;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Timer _musicTimer;
+        private System.Windows.Forms.Label _namePlaylistPlaying;
         private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog2;
+        private System.Windows.Forms.FolderBrowserDialog _obsPathBrowserDialog;
     }
 }
 

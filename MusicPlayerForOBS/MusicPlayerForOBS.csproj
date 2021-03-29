@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>MusicPlayerForOBS</RootNamespace>
     <AssemblyName>MusicPlayerForOBS</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -86,11 +86,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Confirm.cs">
+    <Compile Include="PlaylistExtractionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Confirm.Designer.cs">
-      <DependentUpon>Confirm.cs</DependentUpon>
+    <Compile Include="PlaylistExtractionForm.Designer.cs">
+      <DependentUpon>PlaylistExtractionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -101,41 +101,31 @@
     <Compile Include="JsonSerialization.cs" />
     <Compile Include="AppData.cs" />
     <Compile Include="Playlist.cs" />
-    <Compile Include="PlaylistBuilder.cs" />
-    <Compile Include="PlaylistCreation.cs">
+    <Compile Include="PlaylistEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PlaylistCreation.Designer.cs">
-      <DependentUpon>PlaylistCreation.cs</DependentUpon>
+    <Compile Include="PlaylistEditorForm.Designer.cs">
+      <DependentUpon>PlaylistEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PlaylistEditor.cs">
+    <Compile Include="PlaylistSelectorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PlaylistEditor.Designer.cs">
-      <DependentUpon>PlaylistEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PlaylistSelector.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PlaylistSelector.Designer.cs">
-      <DependentUpon>PlaylistSelector.cs</DependentUpon>
+    <Compile Include="PlaylistSelectorForm.Designer.cs">
+      <DependentUpon>PlaylistSelectorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Confirm.resx">
-      <DependentUpon>Confirm.cs</DependentUpon>
+    <EmbeddedResource Include="PlaylistExtractionForm.resx">
+      <DependentUpon>PlaylistExtractionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PlaylistCreation.resx">
-      <DependentUpon>PlaylistCreation.cs</DependentUpon>
+    <EmbeddedResource Include="PlaylistEditorForm.resx">
+      <DependentUpon>PlaylistEditorForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PlaylistEditor.resx">
-      <DependentUpon>PlaylistEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PlaylistSelector.resx">
-      <DependentUpon>PlaylistSelector.cs</DependentUpon>
+    <EmbeddedResource Include="PlaylistSelectorForm.resx">
+      <DependentUpon>PlaylistSelectorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -178,6 +168,9 @@
   <ItemGroup>
     <PackageReference Include="ILMerge" Version="3.0.41" />
   </ItemGroup>
+  <ItemGroup>  
+    <Resource Include="resources\Minecraft Rus.ttf" />  
+  </ItemGroup> 
   <Target Name="ILMerge">
     <!-- the ILMergePath property points to the location of ILMerge.exe console application -->
     <Exec Command="$(ILMergeConsolePath) /out:NAudio.dll Newtonsoft.Json.dll" />

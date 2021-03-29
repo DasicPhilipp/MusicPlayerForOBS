@@ -8,12 +8,12 @@ namespace MusicPlayerForOBS
     [Serializable]
     public class Playlist
     {
-        public const string extension = ".pl";
+        public const string Extension = ".pl";
 
         public string Name;
-        public bool AutomaticallyAddSongsFromFolders;
-        [Newtonsoft.Json.JsonProperty] private List<string> FoldersToUpdate;
+
         [Newtonsoft.Json.JsonProperty] private readonly Dictionary<string, string> Songs;
+        [Newtonsoft.Json.JsonProperty] private List<string> RefreshingFolders;
 
         public Playlist(string playlistName)
         {
@@ -23,7 +23,7 @@ namespace MusicPlayerForOBS
             CheckPathsActuality();
         }
 
-        public void AddSong(string songPath, bool updateFolders = false)
+        public void AddSong(string songPath)
         {
             CheckPathsActuality();
 
@@ -36,7 +36,7 @@ namespace MusicPlayerForOBS
             }
         }
 
-        public void AddSong(string[] songsPaths, bool updateFolders = false)
+        public void AddSong(string[] songsPaths)
         {
             CheckPathsActuality();
 
@@ -118,30 +118,27 @@ namespace MusicPlayerForOBS
 
             if (brokenPathsCount != 0)
             {
-                JsonSerialization.SerializeAsync(this, AppData.playlistsFolder, Name + extension);
+                JsonSerialization.SerializeAsync(this, AppData.PlaylistsFolder + Name + Extension);
             }
 
-            if (AutomaticallyAddSongsFromFolders)
+            if (RefreshingFolders != null)
             {
-                if (FoldersToUpdate == null)
-                {
-                    FoldersToUpdate = new List<string>();
-                }
-
-                foreach (string folderPath in FoldersToUpdate.ToArray())
+                foreach (string folderPath in RefreshingFolders.ToArray())
                 {
                     if (!Directory.Exists(folderPath))
                     {
-                        FoldersToUpdate.Remove(folderPath);
+                        RefreshingFolders.Remove(folderPath);
                     }
-
-                    foreach (string path in Directory.GetFiles(folderPath))
+                    else
                     {
-                        if (MainForm.AudioExtensions.Contains(Path.GetExtension(path)))
+                        foreach (string path in Directory.GetFiles(folderPath))
                         {
-                            if (!Songs.ContainsValue(path))
+                            if (MainForm.AudioExtensions.Contains(Path.GetExtension(path)))
                             {
-                                Songs.Add(Path.GetFileNameWithoutExtension(path), path);
+                                if (!Songs.ContainsValue(path))
+                                {
+                                    Songs.Add(Path.GetFileNameWithoutExtension(path), path);
+                                }
                             }
                         }
                     }
@@ -151,11 +148,11 @@ namespace MusicPlayerForOBS
             return brokenPaths.ToArray();
         }
 
-        public void SetFolderToUpdate(string path)
+        public void SetRefreshingFolder(string path)
         {
-            if (FoldersToUpdate == null)
+            if (RefreshingFolders == null)
             {
-                FoldersToUpdate = new List<string>();
+                RefreshingFolders = new List<string>();
             }
 
             string folderPath;
@@ -168,10 +165,23 @@ namespace MusicPlayerForOBS
                 folderPath = path;
             }
 
-            if (!FoldersToUpdate.Contains(folderPath))
+            if (!RefreshingFolders.Contains(folderPath))
             {
-                FoldersToUpdate.Add(folderPath);
+                RefreshingFolders.Add(folderPath);
             }
+        }
+
+        public void RemoveRefreshingFolder(string path)
+        {
+            if (RefreshingFolders.Contains(path))
+            {
+                RefreshingFolders.Remove(path);
+            }
+        }
+
+        public string[] GetRefreshingFolders()
+        {
+            return RefreshingFolders.ToArray();
         }
     }
 }
