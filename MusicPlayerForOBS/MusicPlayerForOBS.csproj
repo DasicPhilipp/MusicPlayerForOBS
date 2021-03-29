@@ -170,6 +170,9 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <PackageReference Include="ILMerge" Version="3.0.41" />
+    <PackageReference Include="ILMerge.MSBuild.Task">
+      <Version>1.0.7</Version>
+    </PackageReference>
   </ItemGroup>
   <Target Name="ILMerge">
     <!-- the ILMergePath property points to the location of ILMerge.exe console application -->
