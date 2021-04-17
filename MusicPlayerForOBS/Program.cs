@@ -5,6 +5,11 @@ namespace MusicPlayerForOBS
 {
     static class Program
     {
+        static Program()
+        {
+            LibrariesLoader.RegisterDependencyResolver();
+        }
+
         [STAThread]
         static void Main()
         {

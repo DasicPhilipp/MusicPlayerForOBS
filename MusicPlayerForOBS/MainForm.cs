@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -52,6 +54,8 @@ namespace MusicPlayerForOBS
         {
             InitializeComponent();
 
+            Version = AppData.Version;
+
             _waveOut = new WaveOutEvent();
             _audioPathsToPlay = new List<string>();
 
@@ -64,9 +68,12 @@ namespace MusicPlayerForOBS
             if (File.Exists(Path.Combine(AppData.SettingsFolder, "settings.json")))
             {
                 AppData data = JsonSerialization.Deserialize<AppData>(Path.Combine(AppData.SettingsFolder, "settings.json"));
-                Version = AppData.Version;
                 _volume = data.Volume;
                 _obsFilePath = data.ObsFilePath;
+            }
+            else
+            {
+                _volume = 10;
             }
 
             if (_obsFilePath == null) _obsFilePath = "";

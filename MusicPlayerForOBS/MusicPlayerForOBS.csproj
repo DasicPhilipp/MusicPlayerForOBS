@@ -86,6 +86,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LibrariesLoader.cs" />
     <Compile Include="PlaylistExtractionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -165,15 +166,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\Minecraft Rus.ttf" />
+    <EmbeddedResource Include="Minecraft Rus.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NAudio.dll" />
+    <EmbeddedResource Include="Newtonsoft.Json.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <PackageReference Include="ILMerge" Version="3.0.41" />
-    <PackageReference Include="ILMerge.MSBuild.Task">
-      <Version>1.0.7</Version>
-    </PackageReference>
-  </ItemGroup>
   <Target Name="ILMerge">
     <!-- the ILMergePath property points to the location of ILMerge.exe console application -->
     <Exec Command="$(ILMergeConsolePath) /out:NAudio.dll ..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll" />

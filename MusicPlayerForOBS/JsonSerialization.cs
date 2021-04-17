@@ -6,11 +6,11 @@ namespace MusicPlayerForOBS
 {
     public static class JsonSerialization
     {
-        public static async void SerializeAsync<T>(T ob, string path, Formatting format = Formatting.Indented)
+        public static async void SerializeAsync<T>(T ob, string filePath, Formatting format = Formatting.Indented)
         {
             string json = JsonConvert.SerializeObject(ob, format);
 
-            using (StreamWriter file = new StreamWriter(path, false))
+            using (StreamWriter file = new StreamWriter(filePath, false))
             {
                 await file.WriteAsync(json);
             }

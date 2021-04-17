@@ -12,13 +12,14 @@ namespace MusicPlayerForOBS
 
         public string Name;
 
-        [Newtonsoft.Json.JsonProperty] private readonly Dictionary<string, string> Songs;
-        [Newtonsoft.Json.JsonProperty] private List<string> RefreshingFolders;
+        [Newtonsoft.Json.JsonProperty] private readonly Dictionary<string, string> _songs;
+        [Newtonsoft.Json.JsonProperty] private List<string> _refreshingFolders;
 
         public Playlist(string playlistName)
         {
             Name = playlistName;
-            Songs = new Dictionary<string, string>();
+            _songs = new Dictionary<string, string>();
+            _refreshingFolders = new List<string>();
 
             CheckPathsActuality();
         }
@@ -29,9 +30,9 @@ namespace MusicPlayerForOBS
 
             if (MainForm.AudioExtensions.Contains(Path.GetExtension(songPath)))
             {
-                if (!Songs.ContainsValue(songPath))
+                if (!_songs.ContainsValue(songPath))
                 {
-                    Songs.Add(Path.GetFileNameWithoutExtension(songPath), songPath);
+                    _songs.Add(Path.GetFileNameWithoutExtension(songPath), songPath);
                 }
             }
         }
@@ -44,9 +45,9 @@ namespace MusicPlayerForOBS
             {
                 if (MainForm.AudioExtensions.Contains(Path.GetExtension(songPath)))
                 {
-                    if (!Songs.ContainsValue(songPath))
+                    if (!_songs.ContainsValue(songPath))
                     {
-                        Songs.Add(Path.GetFileNameWithoutExtension(songPath), songPath);
+                        _songs.Add(Path.GetFileNameWithoutExtension(songPath), songPath);
                     }
                         
                 }
@@ -57,9 +58,9 @@ namespace MusicPlayerForOBS
         {
             CheckPathsActuality();
 
-            if (Songs.ContainsValue(songPath))
+            if (_songs.ContainsValue(songPath))
             {
-                Songs.Remove(Path.GetFileNameWithoutExtension(songPath));
+                _songs.Remove(Path.GetFileNameWithoutExtension(songPath));
 
                 return true;
             }
@@ -71,9 +72,9 @@ namespace MusicPlayerForOBS
         {
             CheckPathsActuality();
 
-            if (Songs.ContainsKey(key))
+            if (_songs.ContainsKey(key))
             {
-                Songs.Remove(key);
+                _songs.Remove(key);
 
                 return true;
             }
@@ -85,32 +86,32 @@ namespace MusicPlayerForOBS
         {
             CheckPathsActuality();
 
-            return Songs.TryGetValue(key, out songPath);
+            return _songs.TryGetValue(key, out songPath);
         }
 
         public string[] GetSongsKeys()
         {
             CheckPathsActuality();
 
-            return Songs.Keys.ToArray();
+            return _songs.Keys.ToArray();
         }
 
         public string[] GetSongsValues()
         {
             CheckPathsActuality();
 
-            return Songs.Values.ToArray();
+            return _songs.Values.ToArray();
         }
 
         public string[] CheckPathsActuality()
         {
             int brokenPathsCount = 0;
             List<string> brokenPaths = new List<string>();
-            foreach (string path in Songs.Values.ToArray())
+            foreach (string path in _songs.Values.ToArray())
             {
                 if (!File.Exists(path))
                 {
-                    Songs.Remove(Path.GetFileNameWithoutExtension(path));
+                    _songs.Remove(Path.GetFileNameWithoutExtension(path));
                     brokenPaths.Add(path);
                     brokenPathsCount++;
                 }
@@ -121,13 +122,13 @@ namespace MusicPlayerForOBS
                 JsonSerialization.SerializeAsync(this, AppData.PlaylistsFolder + Name + Extension);
             }
 
-            if (RefreshingFolders != null)
+            if (_refreshingFolders != null)
             {
-                foreach (string folderPath in RefreshingFolders.ToArray())
+                foreach (string folderPath in _refreshingFolders.ToArray())
                 {
                     if (!Directory.Exists(folderPath))
                     {
-                        RefreshingFolders.Remove(folderPath);
+                        _refreshingFolders.Remove(folderPath);
                     }
                     else
                     {
@@ -135,9 +136,9 @@ namespace MusicPlayerForOBS
                         {
                             if (MainForm.AudioExtensions.Contains(Path.GetExtension(path)))
                             {
-                                if (!Songs.ContainsValue(path))
+                                if (!_songs.ContainsValue(path))
                                 {
-                                    Songs.Add(Path.GetFileNameWithoutExtension(path), path);
+                                    _songs.Add(Path.GetFileNameWithoutExtension(path), path);
                                 }
                             }
                         }
@@ -150,12 +151,8 @@ namespace MusicPlayerForOBS
 
         public void SetRefreshingFolder(string path)
         {
-            if (RefreshingFolders == null)
-            {
-                RefreshingFolders = new List<string>();
-            }
-
             string folderPath;
+
             if (!File.GetAttributes(path).HasFlag(FileAttributes.Directory))
             {
                 folderPath = Path.GetDirectoryName(path);
@@ -165,23 +162,23 @@ namespace MusicPlayerForOBS
                 folderPath = path;
             }
 
-            if (!RefreshingFolders.Contains(folderPath))
+            if (!_refreshingFolders.Contains(folderPath))
             {
-                RefreshingFolders.Add(folderPath);
+                _refreshingFolders.Add(folderPath);
             }
         }
 
         public void RemoveRefreshingFolder(string path)
         {
-            if (RefreshingFolders.Contains(path))
+            if (_refreshingFolders.Contains(path))
             {
-                RefreshingFolders.Remove(path);
+                _refreshingFolders.Remove(path);
             }
         }
 
         public string[] GetRefreshingFolders()
         {
-            return RefreshingFolders.ToArray();
+            return _refreshingFolders.ToArray();
         }
     }
 }

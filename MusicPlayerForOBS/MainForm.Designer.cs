@@ -56,7 +56,7 @@ namespace MusicPlayerForOBS
             // 
             // button2
             // 
-            this.button2.Font = new System.Drawing.Font("Minecraft Rus", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button2.Location = new System.Drawing.Point(12, 386);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(323, 52);
@@ -67,7 +67,7 @@ namespace MusicPlayerForOBS
             // 
             // button1
             // 
-            this.button1.Font = new System.Drawing.Font("Minecraft Rus", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button1.Location = new System.Drawing.Point(465, 386);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(323, 52);
@@ -76,11 +76,11 @@ namespace MusicPlayerForOBS
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.NextTrack_Click);
             // 
-            // VolumeTrackBar
+            // _volumeTrackBar
             // 
             this._volumeTrackBar.Location = new System.Drawing.Point(30, 167);
             this._volumeTrackBar.Maximum = 100;
-            this._volumeTrackBar.Name = "VolumeTrackBar";
+            this._volumeTrackBar.Name = "_volumeTrackBar";
             this._volumeTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
             this._volumeTrackBar.Size = new System.Drawing.Size(45, 161);
             this._volumeTrackBar.TabIndex = 3;
@@ -89,16 +89,17 @@ namespace MusicPlayerForOBS
             // MusicName
             // 
             this.MusicName.AutoSize = true;
-            this.MusicName.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.MusicName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.MusicName.ForeColor = System.Drawing.Color.Purple;
             this.MusicName.Location = new System.Drawing.Point(12, 87);
             this.MusicName.Name = "MusicName";
-            this.MusicName.Size = new System.Drawing.Size(0, 16);
+            this.MusicName.Size = new System.Drawing.Size(0, 20);
             this.MusicName.TabIndex = 4;
             this.MusicName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button3
             // 
-            this.button3.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button3.Location = new System.Drawing.Point(12, 12);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(256, 35);
@@ -107,43 +108,43 @@ namespace MusicPlayerForOBS
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.ChooseMusicFolder_Click);
             // 
-            // button4
+            // playButton
             // 
-            this.playButton.Font = new System.Drawing.Font("Minecraft Rus", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.playButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.playButton.Location = new System.Drawing.Point(350, 386);
-            this.playButton.Name = "button4";
+            this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(103, 52);
             this.playButton.TabIndex = 6;
             this.playButton.Text = " >";
             this.playButton.UseVisualStyleBackColor = true;
             this.playButton.Click += new System.EventHandler(this.PlayAndPause_Click);
             // 
-            // VolumeIndicator
+            // _volumeIndicator
             // 
             this._volumeIndicator.AutoSize = true;
-            this._volumeIndicator.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this._volumeIndicator.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this._volumeIndicator.Location = new System.Drawing.Point(12, 148);
-            this._volumeIndicator.Name = "VolumeIndicator";
-            this._volumeIndicator.Size = new System.Drawing.Size(82, 16);
+            this._volumeIndicator.Name = "_volumeIndicator";
+            this._volumeIndicator.Size = new System.Drawing.Size(71, 20);
             this._volumeIndicator.TabIndex = 9;
             this._volumeIndicator.Text = "Volume: ";
             this._volumeIndicator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // ErrorsLabel
+            // _errorsLabel
             // 
             this._errorsLabel.AutoSize = true;
-            this._errorsLabel.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this._errorsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this._errorsLabel.ForeColor = System.Drawing.Color.Red;
             this._errorsLabel.Location = new System.Drawing.Point(294, 21);
-            this._errorsLabel.Name = "ErrorsLabel";
-            this._errorsLabel.Size = new System.Drawing.Size(0, 16);
+            this._errorsLabel.Name = "_errorsLabel";
+            this._errorsLabel.Size = new System.Drawing.Size(0, 20);
             this._errorsLabel.TabIndex = 10;
             this._errorsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // trackBar1
+            // timeline
             // 
             this.timeline.Location = new System.Drawing.Point(12, 335);
-            this.timeline.Name = "trackBar1";
+            this.timeline.Name = "timeline";
             this.timeline.Size = new System.Drawing.Size(776, 45);
             this.timeline.TabIndex = 11;
             this.timeline.Scroll += new System.EventHandler(this.ScrollTimeline_ValueChange);
@@ -151,10 +152,10 @@ namespace MusicPlayerForOBS
             // loopCheckbox
             // 
             this.loopCheckbox.AutoSize = true;
-            this.loopCheckbox.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.loopCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.loopCheckbox.Location = new System.Drawing.Point(71, 289);
             this.loopCheckbox.Name = "loopCheckbox";
-            this.loopCheckbox.Size = new System.Drawing.Size(75, 20);
+            this.loopCheckbox.Size = new System.Drawing.Size(64, 24);
             this.loopCheckbox.TabIndex = 12;
             this.loopCheckbox.Text = "Loop";
             this.loopCheckbox.UseVisualStyleBackColor = true;
@@ -163,10 +164,10 @@ namespace MusicPlayerForOBS
             // shuffleCheckBox
             // 
             this.shuffleCheckBox.AutoSize = true;
-            this.shuffleCheckBox.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.shuffleCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.shuffleCheckBox.Location = new System.Drawing.Point(71, 263);
             this.shuffleCheckBox.Name = "shuffleCheckBox";
-            this.shuffleCheckBox.Size = new System.Drawing.Size(101, 20);
+            this.shuffleCheckBox.Size = new System.Drawing.Size(79, 24);
             this.shuffleCheckBox.TabIndex = 13;
             this.shuffleCheckBox.Text = "Shuffle";
             this.shuffleCheckBox.UseVisualStyleBackColor = true;
@@ -174,7 +175,7 @@ namespace MusicPlayerForOBS
             // 
             // button5
             // 
-            this.button5.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button5.Location = new System.Drawing.Point(582, 141);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(206, 31);
@@ -183,24 +184,24 @@ namespace MusicPlayerForOBS
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.CreateNewPlaylist_Click);
             // 
-            // button6
+            // _selectPlaylist
             // 
             this._selectPlaylist.Enabled = false;
-            this._selectPlaylist.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this._selectPlaylist.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this._selectPlaylist.Location = new System.Drawing.Point(582, 189);
-            this._selectPlaylist.Name = "button6";
+            this._selectPlaylist.Name = "_selectPlaylist";
             this._selectPlaylist.Size = new System.Drawing.Size(206, 29);
             this._selectPlaylist.TabIndex = 15;
             this._selectPlaylist.Text = "Select playlist";
             this._selectPlaylist.UseVisualStyleBackColor = true;
             this._selectPlaylist.Click += new System.EventHandler(this.SelectPlaylist_Click);
             // 
-            // button7
+            // _editPlaylist
             // 
             this._editPlaylist.Enabled = false;
-            this._editPlaylist.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this._editPlaylist.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this._editPlaylist.Location = new System.Drawing.Point(582, 239);
-            this._editPlaylist.Name = "button7";
+            this._editPlaylist.Name = "_editPlaylist";
             this._editPlaylist.Size = new System.Drawing.Size(206, 29);
             this._editPlaylist.TabIndex = 16;
             this._editPlaylist.Text = "Edit playlist";
@@ -210,30 +211,31 @@ namespace MusicPlayerForOBS
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.Location = new System.Drawing.Point(373, 293);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 16);
+            this.label1.Size = new System.Drawing.Size(49, 20);
             this.label1.TabIndex = 17;
             this.label1.Text = "00:00";
             // 
-            // timer1
+            // _musicTimer
             // 
             this._musicTimer.Tick += new System.EventHandler(this.SongTimer_Tick);
             // 
-            // label2
+            // _namePlaylistPlaying
             // 
-            this._namePlaylistPlaying.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this._namePlaylistPlaying.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this._namePlaylistPlaying.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this._namePlaylistPlaying.Location = new System.Drawing.Point(227, 158);
-            this._namePlaylistPlaying.Name = "label2";
+            this._namePlaylistPlaying.Name = "_namePlaylistPlaying";
             this._namePlaylistPlaying.Size = new System.Drawing.Size(349, 23);
             this._namePlaylistPlaying.TabIndex = 18;
             this._namePlaylistPlaying.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button8
             // 
-            this.button8.BackColor = System.Drawing.Color.Blue;
-            this.button8.Font = new System.Drawing.Font("Minecraft Rus", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button8.ForeColor = System.Drawing.Color.White;
             this.button8.Location = new System.Drawing.Point(582, 274);
             this.button8.Name = "button8";
